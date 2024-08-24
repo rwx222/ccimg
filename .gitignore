@@ -7,3 +7,6 @@
 
 # Do not ignore the vite-code directory and its contents
 !/vite-code/
+
+# Do not ignore README.md file
+!README.md
