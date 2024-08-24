@@ -1,0 +1,9 @@
+# Ignore everything
+/*
+
+# Do not ignore the .gitignore file and .git directory
+!.gitignore
+!.git/
+
+# Do not ignore the vite-code directory and its contents
+!/vite-code/
