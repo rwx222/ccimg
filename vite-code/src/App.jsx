@@ -1,6 +1,7 @@
 import { DarkThemeToggle, Flowbite, Navbar, Button } from 'flowbite-react'
 
 import GitHubIcon from './Icons/GitHubIcon'
+import MainSvg from './assets/main.svg'
 
 export default function App() {
   return (
@@ -8,11 +9,7 @@ export default function App() {
       <div className='dark:bg-gray-800'>
         <Navbar fluid rounded className='mx-auto max-w-3xl'>
           <Navbar.Brand href='https://andresdotsh.github.io/crop-and-compress-images/'>
-            <img
-              src='/favicon.svg'
-              className='h-9'
-              alt='Crop & Compress Logo'
-            />
+            <img src={MainSvg} className='h-9' alt='Crop & Compress Logo' />
 
             <span className='pl-3 self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>{`Crop & Compress`}</span>
           </Navbar.Brand>
