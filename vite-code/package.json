@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "rm -rf ../docs && vite build && cp -r dist ../docs",
+    "build": "rm -rf ../docs && vite build && cp -r dist ../docs && node ./afterBuild.cjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
