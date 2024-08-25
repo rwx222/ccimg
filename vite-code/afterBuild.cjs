@@ -10,7 +10,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
   }
 
   // necessary for GitHub Pages
-  const prefix = '/create-and-compress-images'
+  const prefix = '/crop-and-compress-images'
 
   const updatedData = data
     .replace(/href="\//g, `href="${prefix}/`)

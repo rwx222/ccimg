@@ -1,4 +1,4 @@
-# Create & Compress Images
+# Crop & Compress Images
 
 This project implements a minimal setup of Vite (`yarn create vite`), with React and TailwindCSS.
 
