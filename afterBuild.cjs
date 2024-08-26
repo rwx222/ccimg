@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const filePath = path.join(__dirname, '..', 'docs', 'index.html')
+const filePath = path.join(__dirname, 'docs', 'index.html')
 
 fs.readFile(filePath, 'utf8', (err, data) => {
   if (err) {

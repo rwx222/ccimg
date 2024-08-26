@@ -6,8 +6,12 @@ import MainSvg from './assets/main.svg'
 export default function App() {
   return (
     <Flowbite>
-      <div className='dark:bg-gray-800'>
-        <Navbar fluid rounded className='mx-auto max-w-3xl'>
+      <div className='bg-[#97afb9] dark:bg-gray-800'>
+        <Navbar
+          fluid
+          rounded
+          className='mx-auto max-w-3xl bg-[#97afb9] dark:bg-gray-800'
+        >
           <Navbar.Brand href='https://andresdotsh.github.io/crop-and-compress-images/'>
             <img src={MainSvg} className='h-9' alt='Crop & Compress Logo' />
 
@@ -17,7 +21,7 @@ export default function App() {
           <div className='flex md:order-2'>
             <Button
               size={'sm'}
-              className='mr-5 md:mr-0'
+              className='mr-4 md:mr-0'
               as='a'
               href='https://github.com/andresdotsh/crop-and-compress-images'
               target='_blanks'
