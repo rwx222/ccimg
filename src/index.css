@@ -20,3 +20,12 @@ html {
 *:after {
   box-sizing: inherit;
 }
+
+/* custom utility classes */
+.cu-bg-standard {
+  @apply bg-[#edfcff] dark:bg-[#121212];
+}
+
+.cu-px-standard {
+  @apply px-5 md:px-4;
+}
