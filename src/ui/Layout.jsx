@@ -14,10 +14,12 @@ function Layout({ children, topLeftContent }) {
           rounded
           className='mx-auto max-w-3xl bg-[#97afb9] dark:bg-gray-800'
         >
-          <Navbar.Brand href='https://andresdotsh.github.io/crop-and-compress-images/'>
+          <Navbar.Brand
+            href={window.location.origin + window.location.pathname}
+          >
             <img src={MainSvg} className='h-9' alt='Crop & Compress Logo' />
 
-            <span className='pl-3 self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>{`Crop & Compress`}</span>
+            <span className='pl-3 self-center whitespace-nowrap text-sm sm:text-lg font-semibold dark:text-white'>{`Crop & Compress`}</span>
           </Navbar.Brand>
 
           <div className='flex md:order-2'>
@@ -44,6 +46,11 @@ function Layout({ children, topLeftContent }) {
               href='https://www.npmjs.com/package/js-image-compressor'
               target='_blank'
             >{`js-image-compressor`}</Navbar.Link>
+
+            <Navbar.Link href='https://x.com/andresdotsh' target='_blank'>
+              <span className='md:hidden'>{`with ❤️ by`}</span>
+              <span className='hidden md:inline'>{`❤️`}</span>
+            </Navbar.Link>
           </Navbar.Collapse>
         </Navbar>
       </div>

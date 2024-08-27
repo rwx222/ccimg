@@ -1,5 +1,5 @@
 import 'react-easy-crop/react-easy-crop.css'
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useMemo } from 'react'
 import toast from 'react-hot-toast'
 import Cropper from 'react-easy-crop'
 import ImageCompressor from 'js-image-compressor'
@@ -7,10 +7,17 @@ import { Button } from 'flowbite-react'
 
 import Layout from './ui/Layout'
 import UploadInput from './ui/UploadInput'
+import Toggle from './ui/Toggle'
+import Select from './ui/Select'
 import DownloadIcon from './Icons/DownloadIcon'
 import getCroppedImage from './utils/getCroppedImage'
 import formatBytes from './utils/formatBytes'
-import { IMAGE_MAX_SIZE_IN_MB } from './constants'
+import {
+  IMAGE_MAX_SIZE_IN_MB,
+  ASPECT_OPTIONS,
+  QUALITY_OPTIONS,
+  SIZE_OPTIONS,
+} from './constants'
 
 export default function App() {
   const croppedAreaPixelsRef = useRef(null)
@@ -27,26 +34,60 @@ export default function App() {
   const [shouldCrop, setShouldCrop] = useState(true)
   const [shouldCompress, setShouldCompress] = useState(true)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [cropAspect, setCropAspect] = useState(ASPECT_OPTIONS[0].id)
+  const [compressQuality, setCompressQuality] = useState(QUALITY_OPTIONS[0].id)
+  const [compressMaxWidth, setCompressMaxWidth] = useState(SIZE_OPTIONS[1].id)
+  const [compressMaxHeight, setCompressMaxHeight] = useState(SIZE_OPTIONS[0].id)
+
+  const selectedAspectValue = useMemo(() => {
+    return (
+      ASPECT_OPTIONS.find((option) => option.id === cropAspect)?.value ??
+      ASPECT_OPTIONS[0].value
+    )
+  }, [cropAspect])
+
+  const selectedQualityValue = useMemo(() => {
+    return (
+      QUALITY_OPTIONS.find((option) => option.id === compressQuality)?.value ??
+      QUALITY_OPTIONS[0].value
+    )
+  }, [compressQuality])
+
+  const selectedMaxWidthValue = useMemo(() => {
+    return SIZE_OPTIONS.find((option) => option.id === compressMaxWidth)?.value
+  }, [compressMaxWidth])
+
+  const selectedMaxHeightValue = useMemo(() => {
+    return SIZE_OPTIONS.find((option) => option.id === compressMaxHeight)?.value
+  }, [compressMaxHeight])
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     croppedAreaPixelsRef.current = croppedAreaPixels
   }, [])
 
-  const compressImage = useCallback((file) => {
-    const compressionOptions = {
-      file,
-      maxWidth: 400,
-      quality: 0.9,
-      success: (compressedFile) => {
-        setCompressedImageSize(compressedFile.size)
-        setCompressedImageUrl(URL.createObjectURL(compressedFile))
-      },
-      error: (msg) => {
-        console.error(`💥💥💥`, msg)
-      },
-    }
-    new ImageCompressor(compressionOptions)
-  }, [])
+  const compressImage = useCallback(
+    (file) => {
+      const compressionOptions = {
+        file,
+        maxWidth: selectedMaxWidthValue ?? undefined,
+        maxHeight: selectedMaxHeightValue ?? undefined,
+        quality: selectedQualityValue,
+        success: (compressedFile) => {
+          setCompressedImageSize(compressedFile.size)
+          setCompressedImageUrl(URL.createObjectURL(compressedFile))
+        },
+        error: (msg) => {
+          console.error(`💥💥💥`, msg)
+          toast.error(`An unexpected error has occurred.`, {
+            duration: 5000,
+            icon: '⛔',
+          })
+        },
+      }
+      new ImageCompressor(compressionOptions)
+    },
+    [selectedMaxHeightValue, selectedMaxWidthValue, selectedQualityValue]
+  )
 
   const cropImage = useCallback(async () => {
     try {
@@ -137,12 +178,10 @@ export default function App() {
               disabled={!shouldCrop && !shouldCompress}
             />
 
-            <div className='cu-px-standard'>
-              <div className='pb-5'>
-                <label className='inline-flex items-center cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    className='sr-only peer'
+            <div className='cu-px-standard sm:grid sm:grid-cols-2'>
+              <div>
+                <div className='w-full max-w-72 pb-5 mx-auto'>
+                  <Toggle
                     checked={shouldCrop}
                     onChange={(e) => {
                       const newChecked = e.target.checked
@@ -151,19 +190,13 @@ export default function App() {
                         setShouldCompress(true)
                       }
                     }}
-                  />
-                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 dark:peer-focus:ring-cyan-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-cyan-600"></div>
-                  <span className='ms-3 font-medium text-gray-900 dark:text-gray-300 text-lg leading-5'>
+                  >
                     {`Crop Image`}
-                  </span>
-                </label>
-              </div>
+                  </Toggle>
+                </div>
 
-              <div className='pb-5'>
-                <label className='inline-flex items-center cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    className='sr-only peer'
+                <div className='w-full max-w-72 pb-5 mx-auto'>
+                  <Toggle
                     checked={shouldCompress}
                     onChange={(e) => {
                       const newChecked = e.target.checked
@@ -172,12 +205,60 @@ export default function App() {
                         setShouldCrop(true)
                       }
                     }}
-                  />
-                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 dark:peer-focus:ring-cyan-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-cyan-600"></div>
-                  <span className='ms-3 font-medium text-gray-900 dark:text-gray-300 text-lg leading-5'>
+                  >
                     {`Compress Image`}
-                  </span>
-                </label>
+                  </Toggle>
+                </div>
+              </div>
+
+              <div className={shouldCompress ? '' : 'opacity-40'}>
+                <div className='w-full max-w-72 pb-5 mx-auto'>
+                  <Select
+                    id='compression_quality_selector'
+                    label={`Compression Quality`}
+                    value={compressQuality}
+                    onChange={(e) => setCompressQuality(e.target.value)}
+                    disabled={!shouldCompress}
+                  >
+                    {QUALITY_OPTIONS.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.id}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+
+                <div className='w-full max-w-72 pb-5 mx-auto'>
+                  <Select
+                    id='compression_max_width_selector'
+                    label={`Compression Max Width`}
+                    value={compressMaxWidth}
+                    onChange={(e) => setCompressMaxWidth(e.target.value)}
+                    disabled={!shouldCompress}
+                  >
+                    {SIZE_OPTIONS.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.id}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+
+                <div className='w-full max-w-72 pb-5 mx-auto'>
+                  <Select
+                    id='compression_max_height_selector'
+                    label={`Compression Max Height`}
+                    value={compressMaxHeight}
+                    onChange={(e) => setCompressMaxHeight(e.target.value)}
+                    disabled={!shouldCompress}
+                  >
+                    {SIZE_OPTIONS.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.id}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
               </div>
             </div>
           </div>
@@ -261,7 +342,7 @@ export default function App() {
           <div className='absolute top-0 bottom-0 left-0 right-0 cu-bg-standard'>
             <div className='absolute left-0 right-0 top-0 bottom-20'>
               <Cropper
-                aspect={1}
+                aspect={selectedAspectValue}
                 image={tempImageUrlToCrop}
                 crop={crop}
                 zoom={zoom}
@@ -286,7 +367,20 @@ export default function App() {
                 />
               </div>
 
-              <div className='flex justify-center'>
+              <div className='flex justify-between items-center'>
+                <div className='w-24'>
+                  <Select
+                    value={cropAspect}
+                    onChange={(e) => setCropAspect(e.target.value)}
+                  >
+                    {ASPECT_OPTIONS.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.id}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+
                 <Button onClick={cropImage} size='xs' className='min-w-28'>
                   <span className='text-lg leading-5'>{`Done`}</span>
                 </Button>

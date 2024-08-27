@@ -15,7 +15,7 @@ function UploadInput({ onClick, onChange, disabled = false }) {
   )
 
   return (
-    <div className='cu-px-standard pb-5'>
+    <div className='cu-px-standard pb-8'>
       <label
         htmlFor={FILE_INPUT_ID}
         onClick={onClick}
