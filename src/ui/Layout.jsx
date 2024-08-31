@@ -14,12 +14,10 @@ function Layout({ children, topLeftContent }) {
           rounded
           className='mx-auto max-w-3xl bg-[#97afb9] dark:bg-gray-800'
         >
-          <Navbar.Brand
-            href={window.location.origin + window.location.pathname}
-          >
+          <Navbar.Brand href='https://ccimg.vapor91.com/'>
             <img src={MainSvg} className='h-9' alt='Crop & Compress Logo' />
 
-            <span className='pl-3 self-center whitespace-nowrap text-sm sm:text-lg font-semibold dark:text-white'>{`Crop & Compress`}</span>
+            <span className='pl-3 self-center whitespace-nowrap text-lg font-semibold dark:text-white'>{`ccimg`}</span>
           </Navbar.Brand>
 
           <div className='flex md:order-2'>

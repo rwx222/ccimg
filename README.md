@@ -9,7 +9,5 @@ The project is designed to be deployed on `GitHub Pages`. To accommodate the way
 After each `build`, the resulting `/dist` folder is copied to `/docs` at the root of the project, making it ready to be served on **GitHub Pages**. This process is handled by the following build script in `/vite-code/package.json`:
 
 ```json
-"build": "rm -rf ./docs && vite build && cp -r dist docs && node ./afterBuild.cjs",
+"build": "rm -rf ./docs && vite build && cp -r dist docs",
 ```
-
-There is also a script in the `afterBuild.cjs` file that adds prefixes within the final `index.html` file, which are necessary to correctly import the final files on GitHub Pages.
