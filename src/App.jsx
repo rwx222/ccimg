@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useMemo } from 'react'
 import toast from 'react-hot-toast'
 import Cropper from 'react-easy-crop'
 import ImageCompressor from 'js-image-compressor'
-import { Button } from 'flowbite-react'
+import { DarkThemeToggle, Button } from 'flowbite-react'
 
 import Layout from './ui/Layout'
 import UploadInput from './ui/UploadInput'
@@ -160,234 +160,250 @@ export default function App() {
   )
 
   return (
-    <Layout
-      topLeftContent={
-        Boolean(croppedImageSize || compressedImageSize) && imageLoaded ? (
-          <Button onClick={resetValues} size='xs' className='min-w-28'>
-            <span className='text-lg leading-5'>{`Reset`}</span>
-          </Button>
-        ) : null
-      }
-    >
-      <div className='relative pt-3 pb-10 min-h-[460px] xs:min-h-[530px] md:min-h-[660px]'>
-        {!imageLoaded && (
+    <Layout>
+      <div className='relative pt-2 pb-12 mx-auto max-w-3xl'>
+        <div className='flex justify-between items-center cu-px-standard'>
           <div>
-            <UploadInput
-              onClick={resetValues}
-              onChange={handleInputOnChange}
-              disabled={!shouldCrop && !shouldCompress}
-            />
-
-            <div className='cu-px-standard sm:grid sm:grid-cols-2'>
-              <div>
-                <div className='w-full max-w-72 pb-5 mx-auto'>
-                  <Toggle
-                    checked={shouldCrop}
-                    onChange={(e) => {
-                      const newChecked = e.target.checked
-                      setShouldCrop(newChecked)
-                      if (!newChecked) {
-                        setShouldCompress(true)
-                      }
-                    }}
-                  >
-                    {`Crop Image`}
-                  </Toggle>
-                </div>
-
-                <div className='w-full max-w-72 pb-5 mx-auto'>
-                  <Toggle
-                    checked={shouldCompress}
-                    onChange={(e) => {
-                      const newChecked = e.target.checked
-                      setShouldCompress(newChecked)
-                      if (!newChecked) {
-                        setShouldCrop(true)
-                      }
-                    }}
-                  >
-                    {`Compress Image`}
-                  </Toggle>
-                </div>
-              </div>
-
-              <div className={shouldCompress ? '' : 'opacity-40'}>
-                <div className='w-full max-w-72 pb-5 mx-auto'>
-                  <Select
-                    id='compression_quality_selector'
-                    label={`Compression Quality`}
-                    value={compressQuality}
-                    onChange={(e) => setCompressQuality(e.target.value)}
-                    disabled={!shouldCompress}
-                  >
-                    {QUALITY_OPTIONS.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.id}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-
-                <div className='w-full max-w-72 pb-5 mx-auto'>
-                  <Select
-                    id='compression_max_width_selector'
-                    label={`Compression Max Width`}
-                    value={compressMaxWidth}
-                    onChange={(e) => setCompressMaxWidth(e.target.value)}
-                    disabled={!shouldCompress}
-                  >
-                    {SIZE_OPTIONS.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.id}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-
-                <div className='w-full max-w-72 pb-5 mx-auto'>
-                  <Select
-                    id='compression_max_height_selector'
-                    label={`Compression Max Height`}
-                    value={compressMaxHeight}
-                    onChange={(e) => setCompressMaxHeight(e.target.value)}
-                    disabled={!shouldCompress}
-                  >
-                    {SIZE_OPTIONS.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.id}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {Boolean(croppedImageSize || compressedImageSize) && imageLoaded && (
-          <div>
-            <div className='cu-px-standard text-lg max-w-lg mx-auto'>
-              <div className='flex justify-between items-center'>
-                {`Original size: `}
-                <span className='font-bold'>
-                  {formatBytes(orginalImageSize)}
-                </span>
-              </div>
-
-              {Boolean(croppedImageSize) && (
-                <div className='flex justify-between items-center'>
-                  {`Cropped size: `}
-                  <span className='font-bold'>
-                    {formatBytes(croppedImageSize)}
-                  </span>
-                </div>
-              )}
-
-              {Boolean(compressedImageSize) && (
-                <div className='flex justify-between items-center'>
-                  {`Compressed size: `}
-                  <span className='font-bold'>
-                    {formatBytes(compressedImageSize)}
-                  </span>
-                </div>
-              )}
-
-              {croppedImageUrl && (
-                <div className='pt-5 flex justify-center'>
-                  <Button
-                    as={'a'}
-                    href={croppedImageUrl}
-                    download={`cropped_${fileName}`}
-                    className='min-w-64'
-                  >
-                    <DownloadIcon className='mr-1' width='20' height='20' />
-                    <span className='text-lg leading-5'>{`Download Cropped`}</span>
-                  </Button>
-                </div>
-              )}
-
-              {compressedImageUrl && (
-                <div className='pt-5 flex justify-center'>
-                  <Button
-                    as={'a'}
-                    href={compressedImageUrl}
-                    download={
-                      shouldCrop
-                        ? `cropped_compressed_${fileName}`
-                        : `compressed_${fileName}`
-                    }
-                    className='min-w-64'
-                  >
-                    <DownloadIcon className='mr-1' width='20' height='20' />
-                    <span className='text-lg leading-5'>{`Download Compressed`}</span>
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {((shouldCompress && compressedImageUrl) ||
-              (!shouldCompress && croppedImageUrl)) && (
-              <div className='pt-5'>
-                <img
-                  alt='Result'
-                  src={shouldCompress ? compressedImageUrl : croppedImageUrl}
-                  className='mx-auto'
-                />
-              </div>
+            {Boolean(croppedImageSize || compressedImageSize) && imageLoaded ? (
+              <Button onClick={resetValues} size='xs' className='min-w-28'>
+                <span className='text-lg leading-5'>{`Reset`}</span>
+              </Button>
+            ) : (
+              <div className='text-lg font-semibold xs:text-xl'>{`Crop & Compress Images`}</div>
             )}
           </div>
-        )}
 
-        {tempImageUrlToCrop && (
-          <div className='absolute top-0 bottom-0 left-0 right-0 cu-bg-standard'>
-            <div className='absolute left-0 right-0 top-0 bottom-20'>
-              <Cropper
-                aspect={selectedAspectValue}
-                image={tempImageUrlToCrop}
-                crop={crop}
-                zoom={zoom}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
-                onCropComplete={onCropComplete}
-                disableAutomaticStylesInjection
+          <DarkThemeToggle />
+        </div>
+
+        <div className='pt-5'>
+          {!imageLoaded && (
+            <div>
+              <UploadInput
+                onClick={resetValues}
+                onChange={handleInputOnChange}
+                disabled={!shouldCrop && !shouldCompress}
               />
-            </div>
 
-            <div className='h-20 absolute bottom-0 left-0 right-0 px-5 flex flex-col justify-between'>
-              <div className='pt-1'>
-                <input
-                  type='range'
-                  min={1}
-                  max={3}
-                  step={0.1}
-                  value={zoom}
-                  onChange={(e) => setZoom(e.target.value)}
-                  aria-labelledby='Zoom'
-                  className='w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'
-                />
-              </div>
+              <div className='cu-px-standard sm:grid sm:grid-cols-2'>
+                <div>
+                  <div className='w-full max-w-72 pb-5 mx-auto'>
+                    <Toggle
+                      checked={shouldCrop}
+                      onChange={(e) => {
+                        const newChecked = e.target.checked
+                        setShouldCrop(newChecked)
+                        if (!newChecked) {
+                          setShouldCompress(true)
+                        }
+                      }}
+                    >
+                      {`Crop Image`}
+                    </Toggle>
+                  </div>
 
-              <div className='flex justify-between items-center'>
-                <div className='w-24'>
-                  <Select
-                    value={cropAspect}
-                    onChange={(e) => setCropAspect(e.target.value)}
-                  >
-                    {ASPECT_OPTIONS.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.id}
-                      </option>
-                    ))}
-                  </Select>
+                  <div className='w-full max-w-72 pb-5 mx-auto'>
+                    <Toggle
+                      checked={shouldCompress}
+                      onChange={(e) => {
+                        const newChecked = e.target.checked
+                        setShouldCompress(newChecked)
+                        if (!newChecked) {
+                          setShouldCrop(true)
+                        }
+                      }}
+                    >
+                      {`Compress Image`}
+                    </Toggle>
+                  </div>
                 </div>
 
-                <Button onClick={cropImage} size='xs' className='min-w-28'>
-                  <span className='text-lg leading-5'>{`Done`}</span>
-                </Button>
+                <div className={shouldCompress ? '' : 'opacity-40'}>
+                  <div className='w-full max-w-72 pb-5 mx-auto'>
+                    <Select
+                      id='compression_quality_selector'
+                      label={`Compression Quality`}
+                      value={compressQuality}
+                      onChange={(e) => setCompressQuality(e.target.value)}
+                      disabled={!shouldCompress}
+                    >
+                      {QUALITY_OPTIONS.map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {option.id}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+
+                  <div className='w-full max-w-72 pb-5 mx-auto'>
+                    <Select
+                      id='compression_max_width_selector'
+                      label={`Compression Max Width`}
+                      value={compressMaxWidth}
+                      onChange={(e) => setCompressMaxWidth(e.target.value)}
+                      disabled={!shouldCompress}
+                    >
+                      {SIZE_OPTIONS.map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {option.id}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+
+                  <div className='w-full max-w-72 pb-5 mx-auto'>
+                    <Select
+                      id='compression_max_height_selector'
+                      label={`Compression Max Height`}
+                      value={compressMaxHeight}
+                      onChange={(e) => setCompressMaxHeight(e.target.value)}
+                      disabled={!shouldCompress}
+                    >
+                      {SIZE_OPTIONS.map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {option.id}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {Boolean(croppedImageSize || compressedImageSize) && imageLoaded && (
+            <div>
+              <div className='cu-px-standard text-lg max-w-lg mx-auto'>
+                <div className='flex justify-between items-center'>
+                  {`Original size: `}
+                  <span className='font-semibold'>
+                    {formatBytes(orginalImageSize)}
+                  </span>
+                </div>
+
+                {Boolean(croppedImageSize) && (
+                  <div className='flex justify-between items-center'>
+                    {`Cropped size: `}
+                    <span className='font-semibold'>
+                      {formatBytes(croppedImageSize)}
+                    </span>
+                  </div>
+                )}
+
+                {Boolean(compressedImageSize) && (
+                  <div className='flex justify-between items-center'>
+                    {`Compressed size: `}
+                    <span className='font-semibold'>
+                      {formatBytes(compressedImageSize)}
+                    </span>
+                  </div>
+                )}
+
+                {croppedImageUrl && (
+                  <div className='pt-5 flex justify-center'>
+                    <Button
+                      as={'a'}
+                      href={croppedImageUrl}
+                      download={`cropped_${fileName}`}
+                      className='min-w-64'
+                    >
+                      <DownloadIcon className='mr-1' width='20' height='20' />
+                      <span className='text-lg leading-5'>{`Download Cropped`}</span>
+                    </Button>
+                  </div>
+                )}
+
+                {compressedImageUrl && (
+                  <div className='pt-5 flex justify-center'>
+                    <Button
+                      as={'a'}
+                      href={compressedImageUrl}
+                      download={
+                        shouldCrop
+                          ? `cropped_compressed_${fileName}`
+                          : `compressed_${fileName}`
+                      }
+                      className='min-w-64'
+                    >
+                      <DownloadIcon className='mr-1' width='20' height='20' />
+                      <span className='text-lg leading-5'>{`Download Compressed`}</span>
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {((shouldCompress && compressedImageUrl) ||
+                (!shouldCompress && croppedImageUrl)) && (
+                <div className='pt-5'>
+                  <img
+                    alt='Result'
+                    src={shouldCompress ? compressedImageUrl : croppedImageUrl}
+                    className='mx-auto'
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {tempImageUrlToCrop && (
+            <div className='absolute top-0 bottom-0 left-0 right-0 cu-bg-standard'>
+              <div className='pb-10'>
+                <div className='relative h-[calc(100vh-4rem)] max-h-[800px]'>
+                  <div className='absolute left-0 right-0 top-0 bottom-20'>
+                    <Cropper
+                      aspect={selectedAspectValue}
+                      image={tempImageUrlToCrop}
+                      crop={crop}
+                      zoom={zoom}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={onCropComplete}
+                      disableAutomaticStylesInjection
+                    />
+                  </div>
+
+                  <div className='h-20 absolute bottom-0 left-0 right-0 px-5 flex flex-col justify-between'>
+                    <div className='pt-1'>
+                      <input
+                        type='range'
+                        min={1}
+                        max={3}
+                        step={0.1}
+                        value={zoom}
+                        onChange={(e) => setZoom(e.target.value)}
+                        aria-labelledby='Zoom'
+                        className='w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'
+                      />
+                    </div>
+
+                    <div className='flex justify-between items-center'>
+                      <div className='w-24'>
+                        <Select
+                          value={cropAspect}
+                          onChange={(e) => setCropAspect(e.target.value)}
+                        >
+                          {ASPECT_OPTIONS.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.id}
+                            </option>
+                          ))}
+                        </Select>
+                      </div>
+
+                      <Button
+                        onClick={cropImage}
+                        size='xs'
+                        className='min-w-28'
+                      >
+                        <span className='text-lg leading-5'>{`Done`}</span>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </Layout>
   )

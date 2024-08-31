@@ -4,7 +4,8 @@
 
 body {
   background-color: #edfcff;
-  color: #000000;
+  color: #121212;
+  font-family: 'Ubuntu Sans Mono', monospace;
 }
 
 html.dark body {
