@@ -36,7 +36,7 @@ export default function App() {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [cropAspect, setCropAspect] = useState(ASPECT_OPTIONS[0].id)
   const [compressQuality, setCompressQuality] = useState(QUALITY_OPTIONS[0].id)
-  const [compressMaxWidth, setCompressMaxWidth] = useState(SIZE_OPTIONS[1].id)
+  const [compressMaxWidth, setCompressMaxWidth] = useState(SIZE_OPTIONS[6].id)
   const [compressMaxHeight, setCompressMaxHeight] = useState(SIZE_OPTIONS[0].id)
 
   const selectedAspectValue = useMemo(() => {
