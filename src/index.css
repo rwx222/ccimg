@@ -30,3 +30,11 @@ html {
 .cu-px-standard {
   @apply px-5 md:px-4;
 }
+
+/* range thumb custom color */
+input[type='range']::-webkit-slider-thumb {
+  @apply bg-cyan-700 dark:bg-cyan-600;
+}
+input[type='range']::-moz-range-thumb {
+  @apply bg-cyan-700 dark:bg-cyan-600;
+}

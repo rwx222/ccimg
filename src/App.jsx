@@ -359,7 +359,7 @@ export default function App() {
                         value={zoom}
                         onChange={(e) => setZoom(e.target.value)}
                         aria-labelledby='Zoom'
-                        className='w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'
+                        className='w-full appearance-none rounded-lg cursor-pointer h-2 bg-gray-200 dark:bg-gray-700'
                       />
                     </div>
 
