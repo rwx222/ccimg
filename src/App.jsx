@@ -348,8 +348,21 @@ export default function App() {
           {tempImageUrlToCrop && (
             <div className='absolute top-0 bottom-0 left-0 right-0 cu-bg-standard'>
               <div className='pb-10'>
-                <div className='relative h-[calc(100lvh-4rem)] max-h-[800px]'>
-                  <div className='h-20 absolute top-0 left-0 right-0 px-5 flex flex-col justify-between'>
+                <div className='relative h-[calc(100dvh-4rem)] max-h-[800px]'>
+                  <div className='absolute left-0 right-0 top-0 bottom-20'>
+                    <Cropper
+                      aspect={selectedAspectValue}
+                      image={tempImageUrlToCrop}
+                      crop={crop}
+                      zoom={zoom}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={onCropComplete}
+                      disableAutomaticStylesInjection
+                    />
+                  </div>
+
+                  <div className='h-20 absolute bottom-0 left-0 right-0 px-5 flex flex-col justify-between'>
                     <div className='pt-1'>
                       <input
                         type='range'
@@ -385,19 +398,6 @@ export default function App() {
                         <span className='text-lg leading-5'>{`Done`}</span>
                       </Button>
                     </div>
-                  </div>
-
-                  <div className='absolute left-0 right-0 top-20 bottom-0'>
-                    <Cropper
-                      aspect={selectedAspectValue}
-                      image={tempImageUrlToCrop}
-                      crop={crop}
-                      zoom={zoom}
-                      onCropChange={setCrop}
-                      onZoomChange={setZoom}
-                      onCropComplete={onCropComplete}
-                      disableAutomaticStylesInjection
-                    />
                   </div>
                 </div>
               </div>
