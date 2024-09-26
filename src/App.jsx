@@ -17,6 +17,10 @@ import {
   ASPECT_OPTIONS,
   QUALITY_OPTIONS,
   SIZE_OPTIONS,
+  LSK_LAST_ASPECT_OPTION,
+  LSK_LAST_COMPRESSION_QUALITY,
+  LSK_LAST_COMPRESSION_MAX_WIDTH,
+  LSK_LAST_COMPRESSION_MAX_HEIGHT,
 } from './constants'
 
 export default function App() {
@@ -34,10 +38,50 @@ export default function App() {
   const [shouldCrop, setShouldCrop] = useState(true)
   const [shouldCompress, setShouldCompress] = useState(true)
   const [imageLoaded, setImageLoaded] = useState(false)
-  const [cropAspect, setCropAspect] = useState(ASPECT_OPTIONS[0].id)
-  const [compressQuality, setCompressQuality] = useState(QUALITY_OPTIONS[0].id)
-  const [compressMaxWidth, setCompressMaxWidth] = useState(SIZE_OPTIONS[6].id)
-  const [compressMaxHeight, setCompressMaxHeight] = useState(SIZE_OPTIONS[0].id)
+
+  const [cropAspect, setCropAspect] = useState(() => {
+    const lastValue = localStorage.getItem(LSK_LAST_ASPECT_OPTION)
+    if (lastValue && typeof lastValue === 'string') {
+      const found = ASPECT_OPTIONS.find((option) => option.id === lastValue)
+      if (found) {
+        return found.id
+      }
+    }
+    return ASPECT_OPTIONS[0].id
+  })
+
+  const [compressQuality, setCompressQuality] = useState(() => {
+    const lastValue = localStorage.getItem(LSK_LAST_COMPRESSION_QUALITY)
+    if (lastValue && typeof lastValue === 'string') {
+      const found = QUALITY_OPTIONS.find((option) => option.id === lastValue)
+      if (found) {
+        return found.id
+      }
+    }
+    return QUALITY_OPTIONS[0].id
+  })
+
+  const [compressMaxWidth, setCompressMaxWidth] = useState(() => {
+    const lastValue = localStorage.getItem(LSK_LAST_COMPRESSION_MAX_WIDTH)
+    if (lastValue && typeof lastValue === 'string') {
+      const found = SIZE_OPTIONS.find((option) => option.id === lastValue)
+      if (found) {
+        return found.id
+      }
+    }
+    return SIZE_OPTIONS[6].id
+  })
+
+  const [compressMaxHeight, setCompressMaxHeight] = useState(() => {
+    const lastValue = localStorage.getItem(LSK_LAST_COMPRESSION_MAX_HEIGHT)
+    if (lastValue && typeof lastValue === 'string') {
+      const found = SIZE_OPTIONS.find((option) => option.id === lastValue)
+      if (found) {
+        return found.id
+      }
+    }
+    return SIZE_OPTIONS[0].id
+  })
 
   const selectedAspectValue = useMemo(() => {
     return (
@@ -165,8 +209,8 @@ export default function App() {
         <div className='flex justify-between items-center cu-px-standard'>
           <div>
             {Boolean(croppedImageSize || compressedImageSize) && imageLoaded ? (
-              <Button onClick={resetValues} size='xs' className='min-w-28'>
-                <span className='text-lg leading-5'>{`Reset`}</span>
+              <Button onClick={resetValues} size='xs' className='min-w-36'>
+                <span className='text-lg leading-5'>{`Start Over`}</span>
               </Button>
             ) : (
               <div className='text-lg font-semibold xs:text-xl'>{`Crop & Compress Images`}</div>
@@ -224,7 +268,15 @@ export default function App() {
                       id='compression_quality_selector'
                       label={`Compression Quality`}
                       value={compressQuality}
-                      onChange={(e) => setCompressQuality(e.target.value)}
+                      onChange={(e) => {
+                        const newValue = e.target.value
+
+                        localStorage.setItem(
+                          LSK_LAST_COMPRESSION_QUALITY,
+                          newValue
+                        )
+                        setCompressQuality(newValue)
+                      }}
                       disabled={!shouldCompress}
                     >
                       {QUALITY_OPTIONS.map((option) => (
@@ -240,7 +292,15 @@ export default function App() {
                       id='compression_max_width_selector'
                       label={`Compression Max Width`}
                       value={compressMaxWidth}
-                      onChange={(e) => setCompressMaxWidth(e.target.value)}
+                      onChange={(e) => {
+                        const newValue = e.target.value
+
+                        localStorage.setItem(
+                          LSK_LAST_COMPRESSION_MAX_WIDTH,
+                          newValue
+                        )
+                        setCompressMaxWidth(newValue)
+                      }}
                       disabled={!shouldCompress}
                     >
                       {SIZE_OPTIONS.map((option) => (
@@ -256,7 +316,15 @@ export default function App() {
                       id='compression_max_height_selector'
                       label={`Compression Max Height`}
                       value={compressMaxHeight}
-                      onChange={(e) => setCompressMaxHeight(e.target.value)}
+                      onChange={(e) => {
+                        const newValue = e.target.value
+
+                        localStorage.setItem(
+                          LSK_LAST_COMPRESSION_MAX_HEIGHT,
+                          newValue
+                        )
+                        setCompressMaxHeight(newValue)
+                      }}
                       disabled={!shouldCompress}
                     >
                       {SIZE_OPTIONS.map((option) => (
@@ -377,10 +445,18 @@ export default function App() {
                     </div>
 
                     <div className='pb-1 flex justify-between items-center'>
-                      <div className='w-24'>
+                      <div className='w-48 xs:w-56'>
                         <Select
                           value={cropAspect}
-                          onChange={(e) => setCropAspect(e.target.value)}
+                          onChange={(e) => {
+                            const newValue = e.target.value
+
+                            localStorage.setItem(
+                              LSK_LAST_ASPECT_OPTION,
+                              newValue
+                            )
+                            setCropAspect(newValue)
+                          }}
                         >
                           {ASPECT_OPTIONS.map((option) => (
                             <option key={option.id} value={option.id}>
@@ -393,7 +469,7 @@ export default function App() {
                       <Button
                         onClick={cropImage}
                         size='xs'
-                        className='min-w-28'
+                        className='min-w-20'
                       >
                         <span className='text-lg leading-5'>{`Done`}</span>
                       </Button>
