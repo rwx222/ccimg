@@ -36,28 +36,19 @@ function Layout({ children }) {
 
           <Navbar.Collapse>
             <Navbar.Link
-              href='https://www.npmjs.com/package/react-easy-crop'
+              href='https://buymeacoffee.com/vapor91'
               target='_blank'
-              className='text-lg leading-5 md:text-sm md:leading-5'
+              className='text-xl leading-5 md:text-base md:leading-5'
             >
-              {`react-easy-crop`}
-            </Navbar.Link>
-
-            <Navbar.Link
-              href='https://www.npmjs.com/package/js-image-compressor'
-              target='_blank'
-              className='text-lg leading-5 md:text-sm md:leading-5'
-            >
-              {`js-image-compressor`}
+              {`Buy me a ☕️`}
             </Navbar.Link>
 
             <Navbar.Link
               href='https://x.com/andresdotsh'
               target='_blank'
-              className='text-lg leading-5 md:text-sm md:leading-5'
+              className='text-xl leading-5 md:text-base md:leading-5'
             >
-              <span className='md:hidden'>{`with ❤️ by`}</span>
-              <span className='hidden md:inline'>{`❤️`}</span>
+              {`With ❤️ by`}
             </Navbar.Link>
           </Navbar.Collapse>
         </Navbar>
