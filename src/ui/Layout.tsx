@@ -1,11 +1,14 @@
-import PropTypes from 'prop-types'
 import { Flowbite, Navbar, Button } from 'flowbite-react'
 import { Toaster } from 'react-hot-toast'
 
-import GitHubIcon from '../Icons/GitHubIcon'
+import GitHubIcon from '../icons/GitHubIcon'
 import MainSvg from '../assets/main.svg'
 
-function Layout({ children }) {
+type LayoutProps = {
+  children: React.ReactNode
+}
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <Flowbite>
       <div className='bg-[#97afb9] dark:bg-gray-800'>
@@ -58,11 +61,6 @@ function Layout({ children }) {
       <Toaster />
     </Flowbite>
   )
-}
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-  topLeftContent: PropTypes.node,
 }
 
 export default Layout

@@ -1,7 +1,7 @@
 import 'react-easy-crop/react-easy-crop.css'
 import { useState, useCallback, useRef, useMemo } from 'react'
 import toast from 'react-hot-toast'
-import Cropper from 'react-easy-crop'
+import Cropper, { Area } from 'react-easy-crop'
 import ImageCompressor from 'js-image-compressor'
 import { DarkThemeToggle, Button } from 'flowbite-react'
 
@@ -9,7 +9,7 @@ import Layout from './ui/Layout'
 import UploadInput from './ui/UploadInput'
 import Toggle from './ui/Toggle'
 import Select from './ui/Select'
-import DownloadIcon from './Icons/DownloadIcon'
+import DownloadIcon from './icons/DownloadIcon'
 import getCroppedImage from './utils/getCroppedImage'
 import formatBytes from './utils/formatBytes'
 import {
@@ -23,11 +23,11 @@ import {
   LSK_LAST_COMPRESSION_MAX_HEIGHT,
 } from './constants'
 
-export default function App() {
-  const croppedAreaPixelsRef = useRef(null)
+const App = () => {
+  const croppedAreaPixelsRef = useRef<Area | null>(null)
 
   const [fileName, setFileName] = useState('')
-  const [zoom, setZoom] = useState(1)
+  const [zoom, setZoom] = useState<number>(1)
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [tempImageUrlToCrop, setTempImageUrlToCrop] = useState('')
   const [orginalImageSize, setOrginalImageSize] = useState(0)
@@ -105,22 +105,25 @@ export default function App() {
     return SIZE_OPTIONS.find((option) => option.id === compressMaxHeight)?.value
   }, [compressMaxHeight])
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    croppedAreaPixelsRef.current = croppedAreaPixels
-  }, [])
+  const onCropComplete = useCallback(
+    (_croppedArea: Area, croppedAreaPixels: Area) => {
+      croppedAreaPixelsRef.current = croppedAreaPixels
+    },
+    [],
+  )
 
   const compressImage = useCallback(
-    (file) => {
+    (file: File) => {
       const compressionOptions = {
         file,
         maxWidth: selectedMaxWidthValue ?? undefined,
         maxHeight: selectedMaxHeightValue ?? undefined,
         quality: selectedQualityValue,
-        success: (compressedFile) => {
+        success: (compressedFile: File) => {
           setCompressedImageSize(compressedFile.size)
           setCompressedImageUrl(URL.createObjectURL(compressedFile))
         },
-        error: (msg) => {
+        error: (msg: string) => {
           console.error(`💥💥💥`, msg)
           toast.error(`An unexpected error has occurred.`, {
             duration: 5000,
@@ -130,14 +133,14 @@ export default function App() {
       }
       new ImageCompressor(compressionOptions)
     },
-    [selectedMaxHeightValue, selectedMaxWidthValue, selectedQualityValue]
+    [selectedMaxHeightValue, selectedMaxWidthValue, selectedQualityValue],
   )
 
   const cropImage = useCallback(async () => {
     try {
       const newCroppedImageBlob = await getCroppedImage(
         tempImageUrlToCrop,
-        croppedAreaPixelsRef.current
+        croppedAreaPixelsRef.current,
       )
 
       setTempImageUrlToCrop('')
@@ -147,7 +150,7 @@ export default function App() {
       if (shouldCompress) {
         compressImage(newCroppedImageBlob)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
       console.error(`💥💥💥 '${error?.message}'`)
 
@@ -173,8 +176,8 @@ export default function App() {
   }, [])
 
   const handleInputOnChange = useCallback(
-    (e) => {
-      const file = e.target.files[0]
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e?.target?.files?.[0]
 
       if (file) {
         const fileMaxSizeInBytes = 1024 * 1024 * IMAGE_MAX_SIZE_IN_MB
@@ -185,7 +188,7 @@ export default function App() {
             {
               duration: 5000,
               icon: '⛔',
-            }
+            },
           )
         } else {
           setFileName(file.name)
@@ -200,7 +203,7 @@ export default function App() {
         }
       }
     },
-    [compressImage, shouldCrop]
+    [compressImage, shouldCrop],
   )
 
   return (
@@ -273,7 +276,7 @@ export default function App() {
 
                         localStorage.setItem(
                           LSK_LAST_COMPRESSION_QUALITY,
-                          newValue
+                          newValue,
                         )
                         setCompressQuality(newValue)
                       }}
@@ -297,7 +300,7 @@ export default function App() {
 
                         localStorage.setItem(
                           LSK_LAST_COMPRESSION_MAX_WIDTH,
-                          newValue
+                          newValue,
                         )
                         setCompressMaxWidth(newValue)
                       }}
@@ -321,7 +324,7 @@ export default function App() {
 
                         localStorage.setItem(
                           LSK_LAST_COMPRESSION_MAX_HEIGHT,
-                          newValue
+                          newValue,
                         )
                         setCompressMaxHeight(newValue)
                       }}
@@ -438,7 +441,7 @@ export default function App() {
                         max={3}
                         step={0.1}
                         value={zoom}
-                        onChange={(e) => setZoom(e.target.value)}
+                        onChange={(e) => setZoom(Number(e.target.value))}
                         aria-labelledby='Zoom'
                         className='w-full appearance-none rounded-lg cursor-pointer h-2 bg-gray-200 dark:bg-gray-700'
                       />
@@ -453,7 +456,7 @@ export default function App() {
 
                             localStorage.setItem(
                               LSK_LAST_ASPECT_OPTION,
-                              newValue
+                              newValue,
                             )
                             setCropAspect(newValue)
                           }}
@@ -484,3 +487,5 @@ export default function App() {
     </Layout>
   )
 }
+
+export default App

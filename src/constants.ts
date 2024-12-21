@@ -5,7 +5,11 @@ export const LSK_LAST_COMPRESSION_QUALITY = 'LSK_COMPRESSION_QUALITY'
 export const LSK_LAST_COMPRESSION_MAX_WIDTH = 'LSK_COMPRESSION_MAX_WIDTH'
 export const LSK_LAST_COMPRESSION_MAX_HEIGHT = 'LSK_COMPRESSION_MAX_HEIGHT'
 
-export const ASPECT_OPTIONS = [
+type RegularOption = {
+  id: string
+  value: number
+}
+export const ASPECT_OPTIONS: RegularOption[] = [
   { id: '1:1 Square', value: 1 },
   { id: '16:9 Desktop', value: 16 / 9 },
   { id: '4:3 Classic', value: 4 / 3 },
@@ -15,7 +19,7 @@ export const ASPECT_OPTIONS = [
   { id: '9:16 Phone', value: 9 / 16 },
 ]
 
-export const QUALITY_OPTIONS = [
+export const QUALITY_OPTIONS: RegularOption[] = [
   { id: '0.9 (Higher)', value: 0.9 },
   { id: '0.8', value: 0.8 },
   { id: '0.7', value: 0.7 },
@@ -27,7 +31,11 @@ export const QUALITY_OPTIONS = [
   { id: '0.1 (Lower)', value: 0.1 },
 ]
 
-export const SIZE_OPTIONS = [
+type SizeOption = {
+  id: string
+  value: number | null
+}
+export const SIZE_OPTIONS: SizeOption[] = [
   { id: 'None', value: null },
   { id: '400px', value: 400 },
   { id: '480px', value: 480 },

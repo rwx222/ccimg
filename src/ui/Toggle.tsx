@@ -1,6 +1,10 @@
-import PropTypes from 'prop-types'
+type ToggleProps = {
+  children?: React.ReactNode
+  checked: boolean
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
-function Toggle({ children, checked, onChange }) {
+const Toggle: React.FC<ToggleProps> = ({ children, checked, onChange }) => {
   return (
     <label className='inline-flex items-center cursor-pointer'>
       <input
@@ -18,12 +22,6 @@ function Toggle({ children, checked, onChange }) {
       )}
     </label>
   )
-}
-
-Toggle.propTypes = {
-  children: PropTypes.node,
-  checked: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
 }
 
 export default Toggle

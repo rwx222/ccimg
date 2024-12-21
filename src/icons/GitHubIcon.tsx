@@ -1,4 +1,4 @@
-export default function GitHubIcon(props) {
+const GitHubIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -17,3 +17,5 @@ export default function GitHubIcon(props) {
     </svg>
   )
 }
+
+export default GitHubIcon

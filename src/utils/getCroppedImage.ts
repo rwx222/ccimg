@@ -1,6 +1,6 @@
 const RESULT_MIMETYPE = 'image/jpeg'
 
-const createImage = (url) => {
+const createImage = (url: string) => {
   return new Promise((resolve, reject) => {
     const image = new Image()
     image.addEventListener('load', () => resolve(image))
@@ -9,23 +9,20 @@ const createImage = (url) => {
   })
 }
 
-/**
- * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
- * @param {File} image - Image File url
- * @param {object} croppedAreaObj - croppedAreaObj Object provided by react-easy-crop
- * @param {boolean} asBase64 - If true, the returned value will be a base64 string
- * @returns {Promise<string | Blob>}
- */
-export default async function getCroppedImage(
-  imageSrc,
-  croppedAreaObj,
-  asBase64 = false
-) {
-  const image = await createImage(imageSrc)
+const getCroppedImage = async (
+  imageSrc: string,
+  croppedAreaObj: any,
+  asBase64: boolean = false,
+): Promise<any> => {
+  const image: any = await createImage(imageSrc)
   const canvas = document.createElement('canvas')
   canvas.width = croppedAreaObj.width
   canvas.height = croppedAreaObj.height
   const ctx = canvas.getContext('2d')
+
+  if (!ctx) {
+    return null
+  }
 
   ctx.fillStyle = '#ffffff'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -38,7 +35,7 @@ export default async function getCroppedImage(
     0,
     0,
     croppedAreaObj.width,
-    croppedAreaObj.height
+    croppedAreaObj.height,
   )
 
   if (asBase64) {
@@ -53,3 +50,5 @@ export default async function getCroppedImage(
     }, RESULT_MIMETYPE)
   })
 }
+
+export default getCroppedImage

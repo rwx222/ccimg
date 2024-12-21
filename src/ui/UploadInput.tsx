@@ -1,17 +1,27 @@
-import PropTypes from 'prop-types'
 import { useCallback } from 'react'
 
 import { IMAGE_MAX_SIZE_IN_MB } from '../constants'
 
 const FILE_INPUT_ID = 'image_file_input'
 
-function UploadInput({ onClick, onChange, disabled = false }) {
+type UploadInputProps = {
+  onClick?: () => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  disabled?: boolean
+}
+
+const UploadInput: React.FC<UploadInputProps> = ({
+  onClick,
+  onChange,
+  disabled = false,
+}) => {
   const handleOnChange = useCallback(
-    (e) => {
+    (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange(e)
-      document.getElementById(FILE_INPUT_ID).value = ''
+
+      ;(document.getElementById(FILE_INPUT_ID) as HTMLInputElement).value = ''
     },
-    [onChange]
+    [onChange],
   )
 
   return (
@@ -41,12 +51,6 @@ function UploadInput({ onClick, onChange, disabled = false }) {
       </p>
     </div>
   )
-}
-
-UploadInput.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onClick: PropTypes.func,
-  disabled: PropTypes.bool,
 }
 
 export default UploadInput

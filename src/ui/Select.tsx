@@ -1,7 +1,22 @@
 import { useMemo } from 'react'
-import PropTypes from 'prop-types'
 
-function Select({ id, label, children, value, onChange, disabled }) {
+type SelectProps = {
+  id?: string
+  label?: string
+  children: React.ReactNode
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  disabled?: boolean
+}
+
+const Select: React.FC<SelectProps> = ({
+  id,
+  label,
+  children,
+  value,
+  onChange,
+  disabled,
+}) => {
   const uid = useMemo(() => {
     return id || `selector_${Math.random()}`
   }, [id])
@@ -28,15 +43,6 @@ function Select({ id, label, children, value, onChange, disabled }) {
       </select>
     </div>
   )
-}
-
-Select.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.string,
-  children: PropTypes.node,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
 }
 
 export default Select
