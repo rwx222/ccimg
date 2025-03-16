@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           rounded
           className='mx-auto max-w-3xl bg-[#97afb9] dark:bg-gray-800'
         >
-          <Navbar.Brand href='https://ccimg.vapor91.com/'>
+          <Navbar.Brand href='https://ccimg.rwx222.com/'>
             <img src={MainSvg} className='h-9' alt='Crop & Compress Logo' />
 
             <span className='pl-3 self-center whitespace-nowrap text-xl font-semibold dark:text-white'>{`ccimg`}</span>
@@ -28,7 +28,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               size={'sm'}
               className='mr-4 md:mr-0'
               as='a'
-              href='https://github.com/andresdotsh/crop-and-compress-images'
+              href='https://github.com/rwx222/crop-and-compress-images'
               target='_blanks'
             >
               <GitHubIcon className='xs:mr-1' width='20' height='20' />
@@ -39,7 +39,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
           <Navbar.Collapse>
             <Navbar.Link
-              href='https://buymeacoffee.com/vapor91'
+              href='https://buymeacoffee.com/rwx222'
               target='_blank'
               className='text-xl leading-5 md:text-base md:leading-5'
             >
@@ -47,7 +47,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Navbar.Link>
 
             <Navbar.Link
-              href='https://x.com/andresdotsh'
+              href='https://x.com/rwx211'
               target='_blank'
               className='text-xl leading-5 md:text-base md:leading-5'
             >
