@@ -28,7 +28,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               size={'sm'}
               className='mr-4 md:mr-0'
               as='a'
-              href='https://github.com/rwx222/crop-and-compress-images'
+              href='https://github.com/rwx222/ccimg'
               target='_blanks'
             >
               <GitHubIcon className='xs:mr-1' width='20' height='20' />
