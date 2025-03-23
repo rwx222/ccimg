@@ -3,6 +3,10 @@
 
 @config '../tailwind.config.js';
 
+@theme {
+  --breakpoint-xs: 22.5rem; /* 360px */
+}
+
 body {
   background-color: #edfcff;
   color: #121212;
