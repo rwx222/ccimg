@@ -45,14 +45,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             >
               {`Buy me a ☕️`}
             </Navbar.Link>
-
-            <Navbar.Link
-              href='https://x.com/rwx211'
-              target='_blank'
-              className='text-xl leading-5 md:text-base md:leading-5'
-            >
-              {`With ❤️ by`}
-            </Navbar.Link>
           </Navbar.Collapse>
         </Navbar>
       </div>
