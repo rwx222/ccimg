@@ -80,7 +80,7 @@ const App = () => {
         return found.id
       }
     }
-    return SIZE_OPTIONS[0].id
+    return SIZE_OPTIONS[6].id
   })
 
   const selectedAspectValue = useMemo(() => {
