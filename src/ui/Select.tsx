@@ -17,8 +17,9 @@ const Select: React.FC<SelectProps> = ({
   onChange,
   disabled,
 }) => {
-  const uid = useMemo(() => {
-    return id || `selector_${Math.random()}`
+  const uid = useMemo<string>(() => {
+    // eslint-disable-next-line react-hooks/purity
+    return id ?? `selector_${Math.random()}`
   }, [id])
 
   return (
