@@ -13,8 +13,8 @@
     "@tailwindcss/vite": "4.1.16",
     "flowbite-react": "0.10.2",
     "js-image-compressor": "2.0.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-easy-crop": "5.5.3",
     "react-hot-toast": "2.6.0",
     "tailwindcss": "4.1.16"
